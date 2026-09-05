@@ -1,93 +1,3117 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <title>CSE 65B - Routine</title>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CSE 65B | Interactive Routine</title>
+
+
+<style>
+
+/* =========================================================
+   THEME VARIABLES
+========================================================= */
+
+:root{
+
+    --bg:#f3f7fc;
+
+    --surface:rgba(255,255,255,.82);
+    --surface-solid:#ffffff;
+    --surface-soft:#f7faff;
+
+    --text:#0b1220;
+    --muted:#64748b;
+
+    --border:rgba(15,23,42,.10);
+
+    --primary:#2563eb;
+    --cyan:#06b6d4;
+    --purple:#7c3aed;
+
+    --header:#0b1220;
+
+    --shadow:
+        0 25px 70px rgba(15,23,42,.10);
+
+    --glow:
+        rgba(37,99,235,.22);
+
+}
+
+
+body.dark{
+
+    --bg:#030712;
+
+    --surface:rgba(10,18,32,.82);
+    --surface-solid:#0b1424;
+    --surface-soft:#0e1a2d;
+
+    --text:#f1f5f9;
+    --muted:#94a3b8;
+
+    --border:rgba(255,255,255,.09);
+
+    --primary:#60a5fa;
+    --cyan:#22d3ee;
+    --purple:#a78bfa;
+
+    --header:#111c30;
+
+    --shadow:
+        0 30px 90px rgba(0,0,0,.45);
+
+    --glow:
+        rgba(96,165,250,.25);
+
+}
+
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    min-height:100vh;
+
+    font-family:
+        Inter,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    color:var(--text);
+
+    background:
+
+        radial-gradient(
+            circle at 5% 0%,
+            rgba(37,99,235,.15),
+            transparent 27%
+        ),
+
+        radial-gradient(
+            circle at 95% 10%,
+            rgba(6,182,212,.13),
+            transparent 25%
+        ),
+
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(124,58,237,.08),
+            transparent 30%
+        ),
+
+        var(--bg);
+
+    transition:
+        background .4s ease,
+        color .4s ease;
+
+    overflow-x:hidden;
+}
+
+
+/* =========================================================
+   BACKGROUND MOTION
+========================================================= */
+
+.background-orb{
+
+    position:fixed;
+
+    border-radius:50%;
+
+    pointer-events:none;
+
+    filter:blur(80px);
+
+    z-index:-1;
+
+    opacity:.20;
+
+}
+
+.orb-one{
+
+    width:260px;
+    height:260px;
+
+    background:#2563eb;
+
+    top:-120px;
+    left:-100px;
+
+    animation:
+        orbMove1 9s ease-in-out infinite;
+
+}
+
+.orb-two{
+
+    width:300px;
+    height:300px;
+
+    background:#06b6d4;
+
+    right:-140px;
+    top:35%;
+
+    animation:
+        orbMove2 11s ease-in-out infinite;
+
+}
+
+.orb-three{
+
+    width:240px;
+    height:240px;
+
+    background:#7c3aed;
+
+    bottom:-120px;
+    left:40%;
+
+    animation:
+        orbMove3 10s ease-in-out infinite;
+
+}
+
+
+@keyframes orbMove1{
+
+    0%,100%{
+        transform:translate(0,0);
+    }
+
+    50%{
+        transform:translate(80px,60px);
+    }
+
+}
+
+
+@keyframes orbMove2{
+
+    0%,100%{
+        transform:translate(0,0);
+    }
+
+    50%{
+        transform:translate(-70px,50px);
+    }
+
+}
+
+
+@keyframes orbMove3{
+
+    0%,100%{
+        transform:translate(0,0);
+    }
+
+    50%{
+        transform:translate(50px,-50px);
+    }
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.nav{
+
+    width:min(1250px,94%);
+
+    margin:auto;
+
+    padding:20px 0;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:11px;
+
+    font-weight:900;
+
+    letter-spacing:.5px;
+
+}
+
+
+.logo-icon{
+
+    width:43px;
+    height:43px;
+
+    display:grid;
+
+    place-items:center;
+
+    border-radius:14px;
+
+    color:white;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--cyan)
+        );
+
+    box-shadow:
+        0 0 25px var(--glow);
+
+    animation:
+        logoPulse 3s ease-in-out infinite;
+
+}
+
+
+@keyframes logoPulse{
+
+    0%,100%{
+        box-shadow:
+            0 0 20px var(--glow);
+    }
+
+    50%{
+        box-shadow:
+            0 0 40px var(--glow);
+    }
+
+}
+
+
+.theme-btn{
+
+    width:44px;
+    height:44px;
+
+    border:1px solid var(--border);
+
+    border-radius:13px;
+
+    background:var(--surface);
+
+    backdrop-filter:blur(15px);
+
+    color:var(--text);
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    transition:.3s;
+
+}
+
+
+.theme-btn:hover{
+
+    transform:
+        rotate(15deg)
+        scale(1.08);
+
+    box-shadow:
+        0 0 25px var(--glow);
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+
+    width:min(1100px,92%);
+
+    margin:35px auto 45px;
+
+    text-align:center;
+
+}
+
+
+.uni-badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:9px 16px;
+
+    border:1px solid var(--border);
+
+    border-radius:100px;
+
+    background:var(--surface);
+
+    backdrop-filter:blur(15px);
+
+    color:var(--primary);
+
+    font-size:10px;
+
+    font-weight:900;
+
+    letter-spacing:1.7px;
+
+    box-shadow:var(--shadow);
+
+    animation:
+        badgeFloat 4s ease-in-out infinite;
+
+}
+
+
+@keyframes badgeFloat{
+
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-5px);
+    }
+
+}
+
+
+.hero h1{
+
+    margin-top:20px;
+
+    font-size:
+        clamp(50px,10vw,92px);
+
+    line-height:.9;
+
+    letter-spacing:-5px;
+
+    font-weight:950;
+
+    background:
+
+        linear-gradient(
+            100deg,
+            var(--text),
+            var(--primary),
+            var(--cyan),
+            var(--purple),
+            var(--text)
+        );
+
+    background-size:300%;
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+    animation:
+        titleFlow 7s linear infinite;
+
+}
+
+
+@keyframes titleFlow{
+
+    to{
+        background-position:300%;
+    }
+
+}
+
+
+.hero p{
+
+    margin-top:18px;
+
+    color:var(--muted);
+
+    font-size:14px;
+
+}
+
+
+.hero-chips{
+
+    margin-top:23px;
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:9px;
+
+}
+
+
+.chip{
+
+    padding:8px 13px;
+
+    border:1px solid var(--border);
+
+    border-radius:10px;
+
+    background:var(--surface);
+
+    backdrop-filter:blur(15px);
+
+    color:var(--muted);
+
+    font-size:11px;
+
+    transition:.25s;
+
+}
+
+
+.chip:hover{
+
+    transform:translateY(-3px);
+
+    color:var(--primary);
+
+    border-color:var(--primary);
+
+}
+
+
+/* =========================================================
+   ANNOUNCEMENT
+========================================================= */
+
+.announcement{
+
+    width:min(1200px,94%);
+
+    margin:0 auto 42px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:13px;
+
+    padding:14px 17px;
+
+    border:1px solid var(--border);
+
+    border-radius:18px;
+
+    background:var(--surface);
+
+    backdrop-filter:blur(18px);
+
+    box-shadow:var(--shadow);
+
+}
+
+
+.announce-icon{
+
+    width:39px;
+    height:39px;
+
+    flex:none;
+
+    display:grid;
+
+    place-items:center;
+
+    border-radius:12px;
+
+    background:rgba(245,158,11,.12);
+
+    animation:
+        warningPulse 2s ease-in-out infinite;
+
+}
+
+
+@keyframes warningPulse{
+
+    50%{
+        transform:scale(1.08);
+
+    }
+
+}
+
+
+.announcement marquee{
+
+    color:var(--text);
+
+    font-size:13px;
+
+    font-weight:650;
+
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.section{
+
+    width:min(1250px,94%);
+
+    margin:0 auto 55px;
+
+}
+
+
+.section-head{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:end;
+
+    margin-bottom:19px;
+
+}
+
+
+.section-title{
+
+    font-size:25px;
+
+    font-weight:900;
+
+    letter-spacing:-.5px;
+
+}
+
+
+.section-sub{
+
+    margin-top:5px;
+
+    color:var(--muted);
+
+    font-size:12px;
+
+}
+
+
+.section-number{
+
+    color:var(--primary);
+
+    font-size:10px;
+
+    font-weight:900;
+
+    letter-spacing:2px;
+
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-card{
+
+    padding:1px;
+
+    border-radius:25px;
+
+    background:
+
+        linear-gradient(
+            120deg,
+            var(--primary),
+            var(--cyan),
+            var(--purple),
+            var(--primary)
+        );
+
+    background-size:300%;
+
+    animation:
+        borderFlow 8s linear infinite;
+
+    box-shadow:var(--shadow);
+
+}
+
+
+@keyframes borderFlow{
+
+    to{
+        background-position:300%;
+    }
+
+}
+
+
+.table-scroll{
+
+    overflow-x:auto;
+
+    border-radius:24px;
+
+    background:var(--surface-solid);
+
+}
+
+
+table{
+
+    width:100%;
+
+    min-width:1120px;
+
+    border-collapse:collapse;
+
+}
+
+
+th{
+
+    padding:19px 13px;
+
+    background:var(--header);
+
+    color:white;
+
+    font-size:10px;
+
+    font-weight:850;
+
+    letter-spacing:.6px;
+
+    white-space:nowrap;
+
+}
+
+
+th:first-child{
+    border-radius:23px 0 0 0;
+}
+
+
+th:last-child{
+    border-radius:0 23px 0 0;
+}
+
+
+td{
+
+    padding:15px 11px;
+
+    text-align:center;
+
+    border-bottom:1px solid var(--border);
+
+    border-right:1px solid var(--border);
+
+    color:var(--muted);
+
+    font-size:11px;
+
+    white-space:nowrap;
+
+}
+
+
+tr:last-child td{
+    border-bottom:none;
+}
+
+
+td:first-child{
+
+    position:sticky;
+
+    left:0;
+
+    z-index:3;
+
+    min-width:115px;
+
+    background:var(--surface-soft);
+
+    color:var(--text);
+
+    font-weight:900;
+
+}
+
+
+td:not(:first-child){
+    min-width:150px;
+}
+
+
+/* =========================================================
+   SUBJECT BUTTON
+========================================================= */
+
+.subject{
+
+    position:relative;
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:6px;
+
+    padding:9px 11px;
+
+    border:1px solid transparent;
+
+    border-radius:10px;
+
+    background:transparent;
+
+    color:var(--primary);
+
+    font:inherit;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:
+
+        transform .25s ease,
+
+        background .25s ease,
+
+        border .25s ease,
+
+        box-shadow .25s ease;
+
+}
+
+
+.subject::after{
+
+    content:"↗";
+
+    font-size:9px;
+
+    opacity:.5;
+
+    transition:.25s;
+
+}
+
+
+.subject:hover{
+
+    transform:
+        translateY(-3px)
+        scale(1.03);
+
+    background:var(--glow);
+
+    border-color:
+        var(--primary);
+
+    box-shadow:
+
+        0 0 10px var(--glow),
+        0 0 25px rgba(37,99,235,.10);
+
+}
+
+
+.subject:hover::after{
+
+    opacity:1;
+
+    transform:
+        translate(2px,-2px);
+
+}
+
+
+.subject:active{
+
+    transform:scale(.96);
+
+}
+
+
+/* =========================================================
+   FACULTY GRID
+========================================================= */
+
+.faculty-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:17px;
+
+}
+
+
+.faculty-card{
+
+    --card-glow:rgba(37,99,235,.35);
+
+    position:relative;
+
+    overflow:visible;
+
+    padding:22px;
+
+    min-height:185px;
+
+    border:1px solid var(--border);
+
+    border-radius:21px;
+
+    background:var(--surface);
+
+    backdrop-filter:blur(18px);
+
+    box-shadow:var(--shadow);
+
+    cursor:pointer;
+
+    transition:
+
+        transform .35s ease,
+
+        border-color .35s ease,
+
+        box-shadow .35s ease;
+
+}
+
+
+/* individual faculty glow */
+
+.faculty-card:nth-child(1){
+
+    --card-glow:
+        rgba(59,130,246,.45);
+
+}
+
+
+.faculty-card:nth-child(2){
+
+    --card-glow:
+        rgba(168,85,247,.45);
+
+}
+
+
+.faculty-card:nth-child(3){
+
+    --card-glow:
+        rgba(6,182,212,.45);
+
+}
+
+
+.faculty-card:nth-child(4){
+
+    --card-glow:
+        rgba(34,197,94,.40);
+
+}
+
+
+.faculty-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:-2px;
+
+    z-index:-1;
+
+    border-radius:23px;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            var(--card-glow),
+            transparent 65%
+        );
+
+    opacity:.35;
+
+    filter:blur(15px);
+
+    animation:
+        facultyGlow 3.5s ease-in-out infinite;
+
+}
+
+
+@keyframes facultyGlow{
+
+    0%,100%{
+        opacity:.25;
+        transform:scale(.96);
+    }
+
+    50%{
+        opacity:.65;
+        transform:scale(1.04);
+    }
+
+}
+
+
+.faculty-card:hover{
+
+    transform:
+        translateY(-9px);
+
+    border-color:
+        var(--card-glow);
+
+    box-shadow:
+        0 20px 55px var(--card-glow);
+
+}
+
+
+.faculty-top{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+
+.faculty-icon{
+
+    width:45px;
+    height:45px;
+
+    flex:none;
+
+    display:grid;
+
+    place-items:center;
+
+    border-radius:14px;
+
+    color:white;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--cyan)
+        );
+
+    box-shadow:
+        0 0 20px var(--card-glow);
+
+    transition:.3s;
+
+}
+
+
+.faculty-card:hover
+.faculty-icon{
+
+    transform:
+        rotate(-7deg)
+        scale(1.08);
+
+}
+
+
+.faculty-card h3{
+
+    font-size:14px;
+
+    font-weight:900;
+
+}
+
+
+.faculty-card p{
+
+    margin-top:17px;
+
+    color:var(--muted);
+
+    font-size:11px;
+
+    line-height:1.6;
+
+}
+
+
+.course-tag{
+
+    display:inline-block;
+
+    margin-top:14px;
+
+    padding:6px 9px;
+
+    border-radius:8px;
+
+    background:var(--surface-soft);
+
+    border:1px solid var(--border);
+
+    color:var(--primary);
+
+    font-size:9px;
+
+    font-weight:900;
+
+}
+
+
+/* =========================================================
+   FACULTY HOVER POPUP
+========================================================= */
+
+.faculty-hover-info{
+
+    position:absolute;
+
+    left:50%;
+
+    bottom:
+        calc(100% + 15px);
+
+    transform:
+        translateX(-50%)
+        translateY(12px)
+        scale(.94);
+
+    width:245px;
+
+    padding:18px;
+
+    border-radius:17px;
+
+    background:var(--surface-solid);
+
+    border:1px solid var(--border);
+
+    box-shadow:
+
+        0 25px 60px rgba(0,0,0,.22),
+        0 0 30px var(--card-glow);
+
+    opacity:0;
+
+    visibility:hidden;
+
+    pointer-events:none;
+
+    transition:
+
+        opacity .28s ease,
+
+        transform .28s ease,
+
+        visibility .28s;
+
+    z-index:20;
+
+}
+
+
+/* little arrow */
+
+.faculty-hover-info::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:50%;
+
+    bottom:-7px;
+
+    width:13px;
+
+    height:13px;
+
+    background:var(--surface-solid);
+
+    border-right:1px solid var(--border);
+
+    border-bottom:1px solid var(--border);
+
+    transform:
+        translateX(-50%)
+        rotate(45deg);
+
+}
+
+
+.faculty-card:hover
+.faculty-hover-info{
+
+    opacity:1;
+
+    visibility:visible;
+
+    transform:
+        translateX(-50%)
+        translateY(0)
+        scale(1);
+
+}
+
+
+.hover-label{
+
+    color:var(--primary);
+
+    font-size:9px;
+
+    font-weight:900;
+
+    letter-spacing:1.5px;
+
+}
+
+
+.hover-course{
+
+    margin-top:6px;
+
+    font-size:15px;
+
+    font-weight:900;
+
+    line-height:1.3;
+
+}
+
+
+.hover-faculty{
+
+    margin-top:12px;
+
+    padding-top:12px;
+
+    border-top:1px solid var(--border);
+
+    color:var(--muted);
+
+    font-size:11px;
+
+}
+
+
+.hover-faculty strong{
+
+    color:var(--text);
+
+}
+
+
+/* =========================================================
+   NOTES
+========================================================= */
+
+.notes-card{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+    padding:30px;
+
+    border:1px solid var(--border);
+
+    border-radius:23px;
+
+    background:var(--surface);
+
+    backdrop-filter:blur(18px);
+
+    box-shadow:var(--shadow);
+
+    transition:.3s;
+
+}
+
+
+.notes-card:hover{
+
+    transform:translateY(-4px);
+
+    border-color:var(--primary);
+
+    box-shadow:
+        0 25px 70px var(--glow);
+
+}
+
+
+.notes-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+
+}
+
+
+.notes-icon{
+
+    width:58px;
+    height:58px;
+
+    display:grid;
+
+    place-items:center;
+
+    flex:none;
+
+    border-radius:17px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--cyan)
+        );
+
+    color:white;
+
+    font-size:25px;
+
+    animation:
+        notesFloat 3s ease-in-out infinite;
+
+}
+
+
+@keyframes notesFloat{
+
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-5px);
+    }
+
+}
+
+
+.notes-card h2{
+
+    font-size:20px;
+
+    font-weight:900;
+
+}
+
+
+.notes-card p{
+
+    margin-top:5px;
+
+    color:var(--muted);
+
+    font-size:11px;
+
+}
+
+
+.notes-btn{
+
+    padding:13px 19px;
+
+    border-radius:12px;
+
+    text-decoration:none;
+
+    color:white;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--cyan)
+        );
+
+    font-size:11px;
+
+    font-weight:900;
+
+    box-shadow:
+        0 10px 30px var(--glow);
+
+    transition:.3s;
+
+}
+
+
+.notes-btn:hover{
+
+    transform:
+        translateY(-4px)
+        scale(1.03);
+
+    box-shadow:
+        0 15px 40px var(--glow);
+
+}
+
+
+/* =========================================================
+   SUBJECT POPUP
+========================================================= */
+
+#coursePopup{
+
+    position:fixed;
+
+    width:min(310px,calc(100vw - 30px));
+
+    padding:21px;
+
+    border-radius:20px;
+
+    background:var(--surface-solid);
+
+    border:1px solid var(--primary);
+
+    box-shadow:
+
+        0 25px 70px rgba(0,0,0,.30),
+        0 0 35px var(--glow);
+
+    z-index:9999;
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transform:
+        translateY(8px)
+        scale(.92);
+
+    transform-origin:
+        top left;
+
+    transition:
+
+        opacity .22s ease,
+
+        transform .22s ease,
+
+        visibility .22s;
+
+}
+
+
+#coursePopup.show{
+
+    opacity:1;
+
+    visibility:visible;
+
+    transform:
+        translateY(0)
+        scale(1);
+
+}
+
+
+.popup-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    gap:12px;
+
+}
+
+
+.popup-icon{
+
+    width:46px;
+    height:46px;
+
+    display:grid;
+
+    place-items:center;
+
+    border-radius:13px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--cyan)
+        );
+
+    color:white;
+
+    font-size:20px;
+
+    box-shadow:
+        0 0 25px var(--glow);
+
+}
+
+
+.popup-close{
+
+    width:31px;
+    height:31px;
+
+    border:none;
+
+    border-radius:9px;
+
+    background:var(--surface-soft);
+
+    color:var(--text);
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+
+.popup-close:hover{
+
+    background:var(--primary);
+
+    color:white;
+
+    transform:rotate(90deg);
+
+}
+
+
+.popup-label{
+
+    margin-top:18px;
+
+    color:var(--primary);
+
+    font-size:8px;
+
+    font-weight:900;
+
+    letter-spacing:2px;
+
+}
+
+
+#popupCourse{
+
+    margin-top:6px;
+
+    font-size:20px;
+
+    line-height:1.25;
+
+}
+
+
+.popup-faculty{
+
+    margin-top:14px;
+
+    padding:13px;
+
+    border-radius:12px;
+
+    background:var(--surface-soft);
+
+    border:1px solid var(--border);
+
+}
+
+
+.popup-faculty span{
+
+    display:block;
+
+    color:var(--muted);
+
+    font-size:8px;
+
+    font-weight:850;
+
+    letter-spacing:1px;
+
+}
+
+
+.popup-faculty strong{
+
+    display:block;
+
+    margin-top:5px;
+
+    font-size:14px;
+
+}
+
+
+.popup-details{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:9px;
+
+    margin-top:9px;
+
+}
+
+
+.popup-detail{
+
+    padding:11px;
+
+    border-radius:11px;
+
+    background:var(--surface-soft);
+
+    border:1px solid var(--border);
+
+}
+
+
+.popup-detail span{
+
+    display:block;
+
+    color:var(--muted);
+
+    font-size:8px;
+
+}
+
+
+.popup-detail strong{
+
+    display:block;
+
+    margin-top:4px;
+
+    font-size:10px;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+
+    width:min(1250px,94%);
+
+    margin:auto;
+
+    padding:27px 0 40px;
+
+    border-top:1px solid var(--border);
+
+    text-align:center;
+
+    color:var(--muted);
+
+    font-size:10px;
+
+}
+
+
+footer strong{
+    color:var(--text);
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.table-scroll::-webkit-scrollbar{
+
+    height:8px;
+
+}
+
+
+.table-scroll::-webkit-scrollbar-track{
+
+    background:var(--surface-soft);
+
+}
+
+
+.table-scroll::-webkit-scrollbar-thumb{
+
+    background:
+
+        linear-gradient(
+            90deg,
+            var(--primary),
+            var(--cyan)
+        );
+
+    border-radius:20px;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1050px){
+
+    .faculty-grid{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+}
+
+
+@media(max-width:650px){
+
+    .nav{
+        padding-top:15px;
+    }
+
+
+    .hero{
+
+        margin-top:25px;
+
+    }
+
+
+    .hero h1{
+
+        font-size:52px;
+
+        letter-spacing:-3px;
+
+    }
+
+
+    .announcement{
+
+        width:94%;
+
+    }
+
+
+    .section{
+
+        width:94%;
+
+    }
+
+
+    .section-head{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:7px;
+
+    }
+
+
+    .faculty-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    /*
+       On phones there is no real hover.
+       The faculty information becomes visible
+       through the card itself.
+    */
+
+    .faculty-hover-info{
+
+        position:static;
+
+        width:100%;
+
+        margin-top:15px;
+
+        transform:none;
+
+        opacity:1;
+
+        visibility:visible;
+
+        pointer-events:auto;
+
+        box-shadow:none;
+
+        border-radius:13px;
+
+    }
+
+
+    .faculty-hover-info::after{
+
+        display:none;
+
+    }
+
+
+    .notes-card{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+
+    .notes-btn{
+
+        width:100%;
+
+        text-align:center;
+
+    }
+
+
+    #coursePopup{
+
+        width:
+            min(320px,calc(100vw - 24px));
+
+    }
+
+}
+
+
+@media(max-width:400px){
+
+    .hero h1{
+
+        font-size:44px;
+
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+
+        animation-duration:.01ms !important;
+
+        animation-iteration-count:1 !important;
+
+        transition-duration:.01ms !important;
+
+    }
+
+}
+
+</style>
+
 </head>
 
-<body style="margin:0; font-family:Arial, sans-serif; background:linear-gradient(135deg, #1e3c72, #2a5298); color:white; text-align:center;">
 
-<h1 style="padding:20px; margin:0; font-size:40px; text-shadow:0 0 10px #00ffff, 0 0 20px #00ffff;">
-  ╔═ ℂ𝕊𝔼 𝟞𝟝𝔹 - ℝ𝕠𝕦𝕥𝕚𝕟𝕖 ═╗
-</h1>
+<body>
 
 
-<marquee behavior="scroll" direction="left" scrollamount="8"
-style="background:black; padding:12px; font-weight:bold; color:#00ffff; font-size:18px; letter-spacing:1px;">
-Be Ready for ultimate emotional damage for semester 1.3 , ageer moto vondami ar cholbe na ,porte hebe....</marquee>
+<!-- BACKGROUND -->
+
+<div class="background-orb orb-one"></div>
+<div class="background-orb orb-two"></div>
+<div class="background-orb orb-three"></div>
 
 
+<!-- =======================================================
+     NAV
+======================================================= -->
 
-<table style="margin:20px auto; border-collapse:collapse; width:95%; background:rgba(255,255,255,0.1); backdrop-filter:blur(10px); border-radius:10px; overflow:hidden;">
-<!-- Bhai re code copy koris na basic hsc html -->
-  <tr>
-    <th style="padding:15px; border:1px solid rgba(255,255,255,0.2); background:rgba(0,0,0,0.3);">Day</th>
-    <th style="padding:15px; border:1px solid rgba(255,255,255,0.2); background:rgba(0,0,0,0.3);">09:00 AM - 10:30 AM</th>
-    <th style="padding:15px; border:1px solid rgba(255,255,255,0.2); background:rgba(0,0,0,0.3);">10:30 AM - 12:00 PM</th>
-    <th style="padding:15px; border:1px solid rgba(255,255,255,0.2); background:rgba(0,0,0,0.3);">12:00 PM - 1:30 PM</th>
-    <th style="padding:15px; border:1px solid rgba(255,255,255,0.2); background:rgba(0,0,0,0.3);">01:30 PM - 03:00 PM</th>
-    <th style="padding:15px; border:1px solid rgba(255,255,255,0.2); background:rgba(0,0,0,0.3);">03:00 PM - 04:30 PM</th>
-    <th style="padding:15px; border:1px solid rgba(255,255,255,0.2); background:rgba(0,0,0,0.3);" >04:30 PM - 06:00 PM</th>
-  </tr>
-<!-- Bhai re code copy koris na basic hsc html -->
-  <tr>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">Sunday</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">----</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">----</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">IS GL-2 AH</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);"> DS 109 AIA</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">----</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">----</td>
-  </tr>
-<!-- Bhai re code copy koris na basic hsc html -->
-  <tr>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">Monday</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">----</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">----</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);"> IS GL-1 AH</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);"> BS&EC 306 ATB</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">----</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">----</td>
-  </tr>
-<!-- Bhai re code copy koris na basic hsc html -->
-  <tr>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">Tuesday</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">----</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">----</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">BS&EC Lab 311 ATB</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);"> BS&EC Lab 311 ATB</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);"> MG&VA 109 RMD</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">----</td>
-  </tr>
-<!-- Bhai re code copy koris na basic hsc html -->
-  <tr>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">Wednesday</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);"> DS Lab 405 AIA</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);"> DS Lab 405 AIA</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);"> BS&EC 507 ATB</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">----</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">----</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">----</td>
-  </tr>
-<!-- Bhai re code copy koris na basic hsc html -->
-  <tr>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">Thursday</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">----</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);"> DS 403 AIA</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">----</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);"> MG&VA 306 RMD</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">----</td>
-    <td style="padding:15px; border:1px solid rgba(255,255,255,0.2);">----</td>
-  </tr>
-<!-- Bhai re code copy koris na basic hsc html -->
+<nav class="nav">
 
-</table>
-<hr>
-<h2><a href="https://drive.google.com/drive/folders/1ME46df46h-oGTch0kXn1cWEolwuEE7jJ?usp=drive_link" target="_blank"><b style="color:red" ;>Class Notes</b></a></h2>
+    <div class="logo">
 
-<footer style="margin:20px; font-size:14px; opacity:0.8;">
-  Created by Arafat, CR - B Section 
+        <div class="logo-icon">
+            🎓
+        </div>
+
+        <span>CSE 65B</span>
+
+    </div>
+
+
+    <button
+        class="theme-btn"
+        id="themeBtn"
+        onclick="toggleTheme()"
+        aria-label="Toggle theme"
+    >
+        🌙
+    </button>
+
+</nav>
+
+
+<!-- =======================================================
+     HERO
+======================================================= -->
+
+<header class="hero">
+
+    <div class="uni-badge">
+
+        🎓 METROPOLITAN UNIVERSITY
+
+    </div>
+
+
+    <h1>
+        CSE 65B
+    </h1>
+
+
+    <p>
+        Section B · Interactive Class Routine
+    </p>
+
+
+    <div class="hero-chips">
+
+        <div class="chip">
+            📚 Semester 1.3
+        </div>
+
+        <div class="chip">
+            📅 Sunday — Thursday
+        </div>
+
+        <div class="chip">
+            👆 Click subjects
+        </div>
+
+        <div class="chip">
+            ✨ Hover faculty
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =======================================================
+     ANNOUNCEMENT
+======================================================= -->
+
+<div class="announcement">
+
+    <div class="announce-icon">
+        ⚠️
+    </div>
+
+    <marquee scrollamount="6">
+
+        Be Ready for ultimate emotional damage for semester 1.3 ,
+        ageer moto vondami ar cholbe na ,porte hebe....
+
+    </marquee>
+
+</div>
+
+
+<!-- =======================================================
+     ROUTINE
+======================================================= -->
+
+<section class="section">
+
+
+    <div class="section-head">
+
+        <div>
+
+            <div class="section-title">
+                📅 Weekly Routine
+            </div>
+
+            <div class="section-sub">
+                Click any class to reveal course & faculty information
+            </div>
+
+        </div>
+
+
+        <div class="section-number">
+            01 / ROUTINE
+        </div>
+
+    </div>
+
+
+    <div class="table-card">
+
+        <div class="table-scroll">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>DAY</th>
+
+                        <th>09:00 AM - 10:30 AM</th>
+
+                        <th>10:30 AM - 12:00 PM</th>
+
+                        <th>12:00 PM - 1:30 PM</th>
+
+                        <th>01:30 PM - 03:00 PM</th>
+
+                        <th>03:00 PM - 04:30 PM</th>
+
+                        <th>04:30 PM - 06:00 PM</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    <!-- SUNDAY -->
+
+                    <tr>
+
+                        <td>Sunday</td>
+
+                        <td>----</td>
+
+                        <td>----</td>
+
+
+                        <td>
+
+                            <button
+                                class="subject"
+                                onclick="showCourse(
+                                    this,
+                                    'Introduction to Sociology',
+                                    'Alaul Sir',
+                                    'IS GL-2',
+                                    '12:00 PM - 1:30 PM'
+                                )"
+                            >
+                                IS GL-2 AH
+                            </button>
+
+                        </td>
+
+
+                        <td>
+
+                            <button
+                                class="subject"
+                                onclick="showCourse(
+                                    this,
+                                    'Data Structures',
+                                    'Asif Sir',
+                                    'DS 109',
+                                    '01:30 PM - 03:00 PM'
+                                )"
+                            >
+                                DS 109 AIA
+                            </button>
+
+                        </td>
+
+
+                        <td>----</td>
+
+                        <td>----</td>
+
+                    </tr>
+
+
+                    <!-- MONDAY -->
+
+                    <tr>
+
+                        <td>Monday</td>
+
+                        <td>----</td>
+
+                        <td>----</td>
+
+
+                        <td>
+
+                            <button
+                                class="subject"
+                                onclick="showCourse(
+                                    this,
+                                    'Introduction to Sociology',
+                                    'Alaul Sir',
+                                    'IS GL-1',
+                                    '12:00 PM - 1:30 PM'
+                                )"
+                            >
+                                IS GL-1 AH
+                            </button>
+
+                        </td>
+
+
+                        <td>
+
+                            <button
+                                class="subject"
+                                onclick="showCourse(
+                                    this,
+                                    'Basic Electrical and Electronic Circuits',
+                                    'Anika Tabassum Mam',
+                                    'BS&EC 306',
+                                    '01:30 PM - 03:00 PM'
+                                )"
+                            >
+                                BS&EC 306 ATB
+                            </button>
+
+                        </td>
+
+
+                        <td>----</td>
+
+                        <td>----</td>
+
+                    </tr>
+
+
+                    <!-- TUESDAY -->
+
+                    <tr>
+
+                        <td>Tuesday</td>
+
+                        <td>----</td>
+
+                        <td>----</td>
+
+
+                        <td>
+
+                            <button
+                                class="subject"
+                                onclick="showCourse(
+                                    this,
+                                    'Basic Electrical and Electronic Circuits',
+                                    'Anika Tabassum Mam',
+                                    'BS&EC Lab 311',
+                                    '12:00 PM - 1:30 PM'
+                                )"
+                            >
+                                BS&EC Lab 311 ATB
+                            </button>
+
+                        </td>
+
+
+                        <td>
+
+                            <button
+                                class="subject"
+                                onclick="showCourse(
+                                    this,
+                                    'Basic Electrical and Electronic Circuits',
+                                    'Anika Tabassum Mam',
+                                    'BS&EC Lab 311',
+                                    '01:30 PM - 03:00 PM'
+                                )"
+                            >
+                                BS&EC Lab 311 ATB
+                            </button>
+
+                        </td>
+
+
+                        <td>
+
+                            <button
+                                class="subject"
+                                onclick="showCourse(
+                                    this,
+                                    'Matrices, Geometry and Vector Analysis',
+                                    'Ruma Das Mam',
+                                    'MG&VA 109',
+                                    '03:00 PM - 04:30 PM'
+                                )"
+                            >
+                                MG&VA 109 RMD
+                            </button>
+
+                        </td>
+
+
+                        <td>----</td>
+
+                    </tr>
+
+
+                    <!-- WEDNESDAY -->
+
+                    <tr>
+
+                        <td>Wednesday</td>
+
+
+                        <td>
+
+                            <button
+                                class="subject"
+                                onclick="showCourse(
+                                    this,
+                                    'Data Structures',
+                                    'Asif Sir',
+                                    'DS Lab 405',
+                                    '09:00 AM - 10:30 AM'
+                                )"
+                            >
+                                DS Lab 405 AIA
+                            </button>
+
+                        </td>
+
+
+                        <td>
+
+                            <button
+                                class="subject"
+                                onclick="showCourse(
+                                    this,
+                                    'Data Structures',
+                                    'Asif Sir',
+                                    'DS Lab 405',
+                                    '10:30 AM - 12:00 PM'
+                                )"
+                            >
+                                DS Lab 405 AIA
+                            </button>
+
+                        </td>
+
+
+                        <td>
+
+                            <button
+                                class="subject"
+                                onclick="showCourse(
+                                    this,
+                                    'Basic Electrical and Electronic Circuits',
+                                    'Anika Tabassum Mam',
+                                    'BS&EC 507',
+                                    '12:00 PM - 1:30 PM'
+                                )"
+                            >
+                                BS&EC 507 ATB
+                            </button>
+
+                        </td>
+
+
+                        <td>----</td>
+
+                        <td>----</td>
+
+                        <td>----</td>
+
+                    </tr>
+
+
+                    <!-- THURSDAY -->
+
+                    <tr>
+
+                        <td>Thursday</td>
+
+
+                        <td>----</td>
+
+
+                        <td>
+
+                            <button
+                                class="subject"
+                                onclick="showCourse(
+                                    this,
+                                    'Data Structures',
+                                    'Asif Sir',
+                                    'DS 403',
+                                    '10:30 AM - 12:00 PM'
+                                )"
+                            >
+                                DS 403 AIA
+                            </button>
+
+                        </td>
+
+
+                        <td>----</td>
+
+
+                        <td>
+
+                            <button
+                                class="subject"
+                                onclick="showCourse(
+                                    this,
+                                    'Matrices, Geometry and Vector Analysis',
+                                    'Ruma Das Mam',
+                                    'MG&VA 306',
+                                    '01:30 PM - 03:00 PM'
+                                )"
+                            >
+                                MG&VA 306 RMD
+                            </button>
+
+                        </td>
+
+
+                        <td>----</td>
+
+                        <td>----</td>
+
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     FACULTY
+======================================================= -->
+
+<section class="section">
+
+
+    <div class="section-head">
+
+        <div>
+
+            <div class="section-title">
+                👨‍🏫 Faculty
+            </div>
+
+            <div class="section-sub">
+                Hover over a faculty card for a floating course preview
+            </div>
+
+        </div>
+
+
+        <div class="section-number">
+            02 / FACULTY
+        </div>
+
+    </div>
+
+
+    <div class="faculty-grid">
+
+
+        <!-- ASIF -->
+
+        <div class="faculty-card">
+
+            <div class="faculty-top">
+
+                <div class="faculty-icon">
+                    💻
+                </div>
+
+                <h3>
+                    Asif Sir
+                </h3>
+
+            </div>
+
+
+            <p>
+                Data Structures
+            </p>
+
+
+            <span class="course-tag">
+                DATA STRUCTURES
+            </span>
+
+
+            <div class="faculty-hover-info">
+
+                <div class="hover-label">
+                    COURSE
+                </div>
+
+                <div class="hover-course">
+                    Data Structures
+                </div>
+
+                <div class="hover-faculty">
+                    Faculty:
+                    <strong>
+                        Asif Sir
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ALAUL -->
+
+        <div class="faculty-card">
+
+            <div class="faculty-top">
+
+                <div class="faculty-icon">
+                    🌐
+                </div>
+
+                <h3>
+                    Alaul Sir
+                </h3>
+
+            </div>
+
+
+            <p>
+                Introduction to Sociology
+            </p>
+
+
+            <span class="course-tag">
+                SOCIOLOGY
+            </span>
+
+
+            <div class="faculty-hover-info">
+
+                <div class="hover-label">
+                    COURSE
+                </div>
+
+                <div class="hover-course">
+                    Introduction to Sociology
+                </div>
+
+                <div class="hover-faculty">
+                    Faculty:
+                    <strong>
+                        Alaul Sir
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ANIKA -->
+
+        <div class="faculty-card">
+
+            <div class="faculty-top">
+
+                <div class="faculty-icon">
+                    ⚡
+                </div>
+
+                <h3>
+                    Anika Tabassum Mam
+                </h3>
+
+            </div>
+
+
+            <p>
+                Basic Electrical and Electronic Circuits
+            </p>
+
+
+            <span class="course-tag">
+                BS&EC
+            </span>
+
+
+            <div class="faculty-hover-info">
+
+                <div class="hover-label">
+                    COURSE
+                </div>
+
+                <div class="hover-course">
+                    Basic Electrical and Electronic Circuits
+                </div>
+
+                <div class="hover-faculty">
+                    Faculty:
+                    <strong>
+                        Anika Tabassum Mam
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RUMA -->
+
+        <div class="faculty-card">
+
+            <div class="faculty-top">
+
+                <div class="faculty-icon">
+                    📐
+                </div>
+
+                <h3>
+                    Ruma Das Mam
+                </h3>
+
+            </div>
+
+
+            <p>
+                Matrices, Geometry and Vector Analysis
+            </p>
+
+
+            <span class="course-tag">
+                MG&VA
+            </span>
+
+
+            <div class="faculty-hover-info">
+
+                <div class="hover-label">
+                    COURSE
+                </div>
+
+                <div class="hover-course">
+                    Matrices, Geometry and Vector Analysis
+                </div>
+
+                <div class="hover-faculty">
+                    Faculty:
+                    <strong>
+                        Ruma Das Mam
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     CLASS NOTES
+======================================================= -->
+
+<section class="section">
+
+
+    <div class="section-head">
+
+        <div>
+
+            <div class="section-title">
+                📚 Class Notes
+            </div>
+
+            <div class="section-sub">
+                Shared study materials and resources
+            </div>
+
+        </div>
+
+
+        <div class="section-number">
+            03 / NOTES
+        </div>
+
+    </div>
+
+
+    <div class="notes-card">
+
+
+        <div class="notes-left">
+
+            <div class="notes-icon">
+                📂
+            </div>
+
+
+            <div>
+
+                <h2>
+                    CSE 65B Notes
+                </h2>
+
+                <p>
+                    Open the shared Google Drive folder
+                    for class notes and materials.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <a
+            class="notes-btn"
+            href="https://drive.google.com/drive/folders/1ME46df46h-oGTch0kXn1cWEolwuEE7jJ"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            Open Class Notes ↗
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     SUBJECT POPUP
+======================================================= -->
+
+<div
+    id="coursePopup"
+    role="dialog"
+    aria-live="polite"
+>
+
+
+    <div class="popup-top">
+
+        <div class="popup-icon">
+            📚
+        </div>
+
+
+        <button
+            class="popup-close"
+            onclick="closeCourse()"
+            aria-label="Close"
+        >
+            ✕
+        </button>
+
+    </div>
+
+
+    <div class="popup-label">
+        COURSE INFORMATION
+    </div>
+
+
+    <h2 id="popupCourse">
+        Data Structures
+    </h2>
+
+
+    <div class="popup-faculty">
+
+        <span>
+            FACULTY
+        </span>
+
+        <strong id="popupFaculty">
+            Asif Sir
+        </strong>
+
+    </div>
+
+
+    <div class="popup-details">
+
+
+        <div class="popup-detail">
+
+            <span>
+                ROOM
+            </span>
+
+            <strong id="popupRoom">
+                DS 109
+            </strong>
+
+        </div>
+
+
+        <div class="popup-detail">
+
+            <span>
+                TIME
+            </span>
+
+            <strong id="popupTime">
+                01:30 PM - 03:00 PM
+            </strong>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- =======================================================
+     FOOTER
+======================================================= -->
+
+<footer>
+
+    Created by
+    <strong>Arafat, CR - B Section</strong>
+
+    <br><br>
+
+    CSE 65B · Metropolitan University
+
 </footer>
-<!-- Bhai re code copy koris na basic hsc html -->
+
+
+<!-- =======================================================
+     JAVASCRIPT
+======================================================= -->
+
+<script>
+
+
+/* =========================================================
+   SUBJECT POPUP
+========================================================= */
+
+const popup =
+    document.getElementById("coursePopup");
+
+const popupCourse =
+    document.getElementById("popupCourse");
+
+const popupFaculty =
+    document.getElementById("popupFaculty");
+
+const popupRoom =
+    document.getElementById("popupRoom");
+
+const popupTime =
+    document.getElementById("popupTime");
+
+
+let currentButton = null;
+
+
+function showCourse(
+    button,
+    course,
+    faculty,
+    room,
+    time
+){
+
+    currentButton = button;
+
+
+    popupCourse.textContent =
+        course;
+
+    popupFaculty.textContent =
+        faculty;
+
+    popupRoom.textContent =
+        room;
+
+    popupTime.textContent =
+        time;
+
+
+    /*
+       First show it invisibly so we can
+       calculate its real dimensions.
+    */
+
+    popup.classList.add("show");
+
+
+    positionPopup(button);
+
+}
+
+
+function positionPopup(button){
+
+    const rect =
+        button.getBoundingClientRect();
+
+    const popupRect =
+        popup.getBoundingClientRect();
+
+
+    const gap = 12;
+
+
+    /*
+       Desktop:
+       popup starts near the clicked button.
+    */
+
+    let left =
+        rect.left +
+        (rect.width / 2) -
+        (popupRect.width / 2);
+
+
+    let top =
+        rect.bottom +
+        gap;
+
+
+    /*
+       Keep inside viewport horizontally.
+    */
+
+    if(
+        left + popupRect.width >
+        window.innerWidth - 12
+    ){
+
+        left =
+            window.innerWidth -
+            popupRect.width -
+            12;
+
+    }
+
+
+    if(left < 12){
+
+        left = 12;
+
+    }
+
+
+    /*
+       If popup would go below screen,
+       place it above the clicked button.
+    */
+
+    if(
+        top + popupRect.height >
+        window.innerHeight - 12
+    ){
+
+        top =
+            rect.top -
+            popupRect.height -
+            gap;
+
+    }
+
+
+    /*
+       If it still goes above the viewport,
+       put it near the top.
+    */
+
+    if(top < 12){
+
+        top = 12;
+
+    }
+
+
+    popup.style.left =
+        left + "px";
+
+    popup.style.top =
+        top + "px";
+
+}
+
+
+/* =========================================================
+   CLOSE POPUP
+========================================================= */
+
+function closeCourse(){
+
+    popup.classList.remove("show");
+
+    currentButton = null;
+
+}
+
+
+/* =========================================================
+   CLICK OUTSIDE
+========================================================= */
+
+document.addEventListener(
+    "click",
+    function(event){
+
+        if(
+            popup.classList.contains("show") &&
+            !popup.contains(event.target) &&
+            !event.target.closest(".subject")
+        ){
+
+            closeCourse();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ESC KEY
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Escape"){
+
+            closeCourse();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   KEEP POPUP POSITIONED
+========================================================= */
+
+window.addEventListener(
+    "resize",
+    function(){
+
+        if(currentButton){
+
+            positionPopup(
+                currentButton
+            );
+
+        }
+
+    }
+);
+
+
+window.addEventListener(
+    "scroll",
+    function(){
+
+        if(currentButton){
+
+            positionPopup(
+                currentButton
+            );
+
+        }
+
+    },
+    true
+);
+
+
+/* =========================================================
+   DARK / LIGHT MODE
+========================================================= */
+
+function toggleTheme(){
+
+    document.body.classList.toggle("dark");
+
+
+    const button =
+        document.getElementById("themeBtn");
+
+
+    if(
+        document.body.classList.contains("dark")
+    ){
+
+        button.textContent =
+            "☀️";
+
+        localStorage.setItem(
+            "theme",
+            "dark"
+        );
+
+    }
+
+    else{
+
+        button.textContent =
+            "🌙";
+
+        localStorage.setItem(
+            "theme",
+            "light"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD SAVED THEME
+========================================================= */
+
+window.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        const savedTheme =
+            localStorage.getItem("theme");
+
+
+        const button =
+            document.getElementById("themeBtn");
+
+
+        if(savedTheme === "dark"){
+
+            document.body.classList.add("dark");
+
+            button.textContent =
+                "☀️";
+
+        }
+
+    }
+);
+
+
+</script>
+
 
 </body>
+
 </html>
+```
